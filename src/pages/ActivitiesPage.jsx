@@ -17,7 +17,7 @@ export default function ActivitiesPage() {
     duration_minutes: '',
     location: '',
     virtual: false,
-    required_level: 1,
+    required_level: '', // ahora es texto libre
     capacity: 1,
     community_id: ''
   })
@@ -82,7 +82,7 @@ export default function ActivitiesPage() {
         duration_minutes: '',
         location: '',
         virtual: false,
-        required_level: 1,
+        required_level: '', // vacío de nuevo
         capacity: 1,
         community_id: ''
       })
@@ -148,7 +148,14 @@ export default function ActivitiesPage() {
 
           <Form.Group className="mb-2">
             <Form.Label>Nivel requerido</Form.Label>
-            <Form.Control type="number" name="required_level" value={formData.required_level} onChange={handleChange} min={1} />
+            <Form.Control
+              type="text"
+              name="required_level"
+              value={formData.required_level}
+              onChange={handleChange}
+              placeholder="Escribe el nivel requerido"
+              required
+            />
           </Form.Group>
 
           <Form.Group className="mb-2">
