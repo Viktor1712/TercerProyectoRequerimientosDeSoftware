@@ -85,6 +85,42 @@ export default function CommunitiesPage() {
     }
   }
 
+// ================================
+// 🚀 FUNCION PARA UNIRSE A COMUNIDAD
+// ================================
+const joinCommunity = async (communityId) => {
+  if (!user) {
+    alert("Debes iniciar sesión para unirte.");
+    return;
+  }
+
+  try {
+    const { error } = await supabase
+      .from("community_roles")
+      .insert({
+        user_id: user.id,
+        community_id: communityId,
+        role: "miembro"
+      });
+
+    if (error) {
+      if (error.code === "23505") {
+        alert("Ya eres miembro de esta comunidad.");
+      } else {
+        console.error(error);
+        throw error;
+      }
+    } else {
+      alert("Te has unido correctamente.");
+    }
+
+  } catch (err) {
+    console.error(err);
+    alert("Ocurrió un error al unirte.");
+  }
+};
+
+
   if (loading || authLoading) return <div className="text-center mt-5">Cargando comunidades...</div>
 
   return (
@@ -131,6 +167,12 @@ export default function CommunitiesPage() {
                 <h5 className="card-title">{c.name}</h5>
                 <p className="card-text">{c.description}</p>
                 <p className="text-muted">Hobby: {c.hobbies?.name || 'Sin hobby asignado'}</p>
+
+                {/* BOTON PARA UNIRSE */}
+                <Button onClick={() => joinCommunity(c.id)}>
+                  Unirse
+                </Button>
+
               </div>
             </div>
           </div>
