@@ -1,4 +1,3 @@
-// src/hooks/useAuth.jsx
 import { useEffect, useState, createContext, useContext } from 'react'
 import { supabase } from '../supabaseClient'
 
@@ -20,18 +19,39 @@ function useProvideAuth() {
     const getSession = async () => {
       const { data } = await supabase.auth.getSession()
       setSession(data.session)
-      setUser(data.session?.user ?? null)
+      if (data.session?.user) {
+        await fetchUserProfile(data.session.user.id)
+      }
       setLoading(false)
     }
+
     getSession()
 
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session)
-      setUser(session?.user ?? null)
+      if (session?.user) {
+        fetchUserProfile(session.user.id)
+      } else {
+        setUser(null)
+      }
     })
 
     return () => listener?.subscription?.unsubscribe()
   }, [])
+
+  const fetchUserProfile = async (id) => {
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('id, username, display_name, bio, avatar_url, is_admin')
+        .eq('id', id)
+        .single()
+      if (error) throw error
+      setUser(data)
+    } catch (err) {
+      console.error('Error fetching profile:', err)
+    }
+  }
 
   const signInWithEmail = async (email) => {
     const { data, error } = await supabase.auth.signInWithOtp({ email })
@@ -46,11 +66,5 @@ function useProvideAuth() {
     setUser(null)
   }
 
-  return {
-    session,
-    user,
-    loading,
-    signInWithEmail,
-    signOut
-  }
+  return { session, user, loading, signInWithEmail, signOut }
 }

@@ -1,22 +1,43 @@
-import { Link } from "react-router-dom";
-import { Navbar, Nav, Container } from "react-bootstrap";
+import React from 'react'
+import { Link, NavLink } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth.jsx'
 
-export default function Header() {
+export default function Navbar() {
+  const { session, user, signOut } = useAuth()
+
   return (
-    <Navbar bg="dark" variant="dark" expand="lg">
-      <Container>
-        <Navbar.Brand as={Link} to="/">Hobby Community</Navbar.Brand>
-        <Navbar.Toggle />
-        <Navbar.Collapse>
-          <Nav className="me-auto">
-            <Nav.Link as={Link} to="/hobbies">Hobbies</Nav.Link>
-            <Nav.Link as={Link} to="/activities">Activities</Nav.Link>
-            <Nav.Link as={Link} to="/communities">Communities</Nav.Link>
-            <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
-            <Nav.Link as={Link} to="/moderation">Moderation</Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
-  );
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div className="container">
+        <Link className="navbar-brand" to="/">HobbyHub</Link>
+        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            <li className="nav-item"><NavLink className="nav-link" to="/hobbies">Hobbies</NavLink></li>
+            <li className="nav-item"><NavLink className="nav-link" to="/communities">Comunidades</NavLink></li>
+            <li className="nav-item"><NavLink className="nav-link" to="/activities">Actividades</NavLink></li>
+
+            {/* Solo admins */}
+            {user?.is_admin && (
+              <li className="nav-item"><NavLink className="nav-link" to="/moderation">Moderación</NavLink></li>
+            )}
+          </ul>
+
+          <ul className="navbar-nav ms-auto">
+            {session ? (
+              <>
+                <li className="nav-item"><NavLink className="nav-link" to="/profile">Perfil</NavLink></li>
+                <li className="nav-item">
+                  <button className="btn btn-outline-light btn-sm" onClick={signOut}>Cerrar sesión</button>
+                </li>
+              </>
+            ) : (
+              <li className="nav-item"><NavLink className="nav-link" to="/auth">Ingresar</NavLink></li>
+            )}
+          </ul>
+        </div>
+      </div>
+    </nav>
+  )
 }
