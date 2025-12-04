@@ -19,6 +19,7 @@ export default function Navbar() {
             <li className="nav-item"><NavLink className="nav-link" to="/hobbies">Hobbies</NavLink></li>
             <li className="nav-item"><NavLink className="nav-link" to="/communities">Comunidades</NavLink></li>
             <li className="nav-item"><NavLink className="nav-link" to="/activities">Actividades</NavLink></li>
+            <li className="nav-item"><NavLink className="nav-link" to="/announcements">Avisos</NavLink></li>
 
             {/* Solo los admins ven este link */}
             {user?.is_admin && (

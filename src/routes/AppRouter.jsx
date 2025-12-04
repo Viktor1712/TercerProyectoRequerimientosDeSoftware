@@ -7,7 +7,9 @@ import ProfilePage from '../pages/ProfilePage.jsx'
 import HobbiesPage from '../pages/HobbiesPage.jsx'
 import CommunitiesPage from '../pages/CommunitiesPage.jsx'
 import ActivitiesPage from '../pages/ActivitiesPage.jsx'
+import AnnouncementsPage from '../pages/AnnouncementsPage.jsx'
 import ModerationPage from '../pages/ModerationPage.jsx'
+
 import { useAuth } from '../hooks/useAuth.jsx'
 
 export default function AppRouter() {
@@ -24,6 +26,7 @@ export default function AppRouter() {
       <Route path="/activities" element={session ? <ActivitiesPage /> : <Navigate to="/auth" />} />
       <Route path="/profile" element={session ? <ProfilePage /> : <Navigate to="/auth" />} />
       <Route path="/moderation" element={session ? <ModerationPage /> : <Navigate to="/auth" />} />
+      <Route path="/announcements" element={session ? <AnnouncementsPage /> : <Navigate to="/auth" />} />
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   )
