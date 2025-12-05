@@ -22,9 +22,9 @@ export default function Navbar() {
             <li className="nav-item"><NavLink className="nav-link" to="/announcements">Avisos</NavLink></li>
 
             {/* Solo los admins ven este link */}
-            {user?.is_admin && (
+            {/* {user?.is_admin && (
               <li className="nav-item"><NavLink className="nav-link" to="/moderation">Moderación</NavLink></li>
-            )}
+            )} */}
           </ul>
 
           <ul className="navbar-nav ms-auto">
